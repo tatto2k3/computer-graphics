@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solar System</title>
+  <style>
+    body {
+      overflow: hidden;
+      margin: 0px;
+    }
+    #planet-info {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 10px;
+      border-radius: 5px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <script src="./min.js/dat.gui.min.js"></script>
+  <script src="./js/solarSystem.js" type="module"></script>
+  <div id="planet-info"></div>
+</body>
+</html>
