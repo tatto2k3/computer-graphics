@@ -1,4 +1,3 @@
-//Import
 import * as THREE from "https://unpkg.com/three@0.127.0/build/three.module.js";
 import { OrbitControls } from "https://unpkg.com/three@0.127.0/examples/jsm/controls/OrbitControls.js";
 
@@ -7,7 +6,6 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 const textureLoader = new THREE.TextureLoader();
-
 const starTexture = textureLoader.load("./image/stars.jpg");
 const sunTexture = textureLoader.load("./image/sun.jpg");
 const mercuryTexture = textureLoader.load("./image/mercury.jpg");
@@ -24,26 +22,18 @@ const uranusRingTexture = textureLoader.load("./image/uranus_ring.png");
 
 const scene = new THREE.Scene();
 
-const cubeTextureLoader = new THREE.CubeTextureLoader();
-const cubeTexture = cubeTextureLoader.load([
-  starTexture,
-  starTexture,
-  starTexture,
-  starTexture,
-  starTexture,
-  starTexture,
-]);
-scene.background = cubeTexture;
-
-const camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000
-);
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.set(-50, 90, 150);
 
 const orbit = new OrbitControls(camera, renderer.domElement);
+
+const starGeo = new THREE.SphereGeometry(500, 64, 64);
+const starMat = new THREE.MeshBasicMaterial({
+  map: starTexture,
+  side: THREE.BackSide,
+});
+const starMesh = new THREE.Mesh(starGeo, starMat);
+scene.add(starMesh);
 
 const sungeo = new THREE.SphereGeometry(15, 50, 50);
 const sunMaterial = new THREE.MeshBasicMaterial({
@@ -67,7 +57,7 @@ function createLineLoopWithMesh(radius, color, width) {
   const geometry = new THREE.BufferGeometry();
   const lineLoopPoints = [];
 
-  const numSegments = 100; 
+  const numSegments = 100;
   for (let i = 0; i <= numSegments; i++) {
     const angle = (i / numSegments) * Math.PI * 2;
     const x = radius * Math.cos(angle);
@@ -90,7 +80,7 @@ const genratePlanet = (size, planetTexture, x, ring, planetName) => {
     map: planetTexture,
   });
   const planet = new THREE.Mesh(planetGeometry, planetMaterial);
-  planet.userData.planetName = planetName; 
+  planet.userData.planetName = planetName;
   const planetObj = new THREE.Object3D();
   planet.position.set(x, 0, 0);
   if (ring) {
@@ -118,10 +108,6 @@ const genratePlanet = (size, planetTexture, x, ring, planetName) => {
   };
 };
 
-
-
-
-
 const planets = [
   {
     ...genratePlanet(3.2, mercuryTexture, 28, null, "Mercury"),
@@ -129,22 +115,22 @@ const planets = [
     self_rotation_speed: 0.004,
   },
   {
-    ...genratePlanet(5.8, venusTexture, 44,null, "Venus"),
+    ...genratePlanet(5.8, venusTexture, 44, null, "Venus"),
     rotaing_speed_around_sun: 0.015,
     self_rotation_speed: 0.002,
   },
   {
-    ...genratePlanet(6, earthTexture, 62,null, "Earth"),
+    ...genratePlanet(6, earthTexture, 62, null, "Earth"),
     rotaing_speed_around_sun: 0.001,
     self_rotation_speed: 0.02,
   },
   {
-    ...genratePlanet(4, marsTexture, 78,null, "Mars"),
+    ...genratePlanet(4, marsTexture, 78, null, "Mars"),
     rotaing_speed_around_sun: 0.008,
     self_rotation_speed: 0.018,
   },
   {
-    ...genratePlanet(12, jupiterTexture, 100,null, "Jupiter"),
+    ...genratePlanet(12, jupiterTexture, 100, null, "Jupiter"),
     rotaing_speed_around_sun: 0.002,
     self_rotation_speed: 0.04,
   },
@@ -167,12 +153,12 @@ const planets = [
     self_rotation_speed: 0.03,
   },
   {
-    ...genratePlanet(7, neptuneTexture, 200,null, "Neptune"),
+    ...genratePlanet(7, neptuneTexture, 200, null, "Neptune"),
     rotaing_speed_around_sun: 0.0001,
     self_rotation_speed: 0.032,
   },
   {
-    ...genratePlanet(2.8, plutoTexture, 216,null, "Pluto"),
+    ...genratePlanet(2.8, plutoTexture, 216, null, "Pluto"),
     rotaing_speed_around_sun: 0.0007,
     self_rotation_speed: 0.008,
   },
@@ -195,15 +181,12 @@ gui.add(options, "Show path").onChange((e) => {
     dpath.visible = e;
   });
 });
-const maxSpeed = new URL(window.location.href).searchParams.get("ms")*1
-gui.add(options, "speed", 0, maxSpeed?maxSpeed:20);
-
-
-
+const maxSpeed = new URL(window.location.href).searchParams.get("ms") * 1
+gui.add(options, "speed", 0, maxSpeed ? maxSpeed : 20);
 
 
 function animate(time) {
-  sun.rotateY(options.speed * 0.004); 
+  sun.rotateY(options.speed * 0.004);
   planets.forEach(({ planetObj, planet, rotaing_speed_around_sun, self_rotation_speed }) => {
     planetObj.rotateY(options.speed * rotaing_speed_around_sun);
     planet.rotateY(options.speed * self_rotation_speed);
@@ -225,73 +208,115 @@ function showPlanetInfo(planetName) {
   let diameter = "";
   let day = "";
   let trajectory = "";
+  let texture = null;
+
   const planet = planets.find(p => p.planet.userData.planetName === planetName);
   if (planetName == "Mercury") {
     planetName = "Sao Thủy";
     diameter = "4,878 km";
     day = "58,6 ngày Trái Đất";
     trajectory = "88 ngày Trái Đất";
-  }
-  else if (planetName == "Venus") {
+    texture = mercuryTexture;
+  } else if (planetName == "Venus") {
     planetName = "Sao Kim";
-    diameter = "12,104 kilomet";
+    diameter = "12,104 km";
     day = "241 ngày Trái Đất";
     trajectory = "225 ngày Trái Đất";
-  }
-  else if (planetName == "Earth") 
-  {
+    texture = venusTexture;
+  } else if (planetName == "Earth") {
     planetName = "Trái Đất";
-    diameter = "12,760 kilomet";
+    diameter = "12,760 km";
     day = "23 giờ 56 phút";
     trajectory = "365,24 ngày";
-  }
-  else if (planetName == "Mars") {
+    texture = earthTexture;
+  } else if (planetName == "Mars") {
     planetName = "Sao Hỏa";
-    diameter = "6,787 kilomet";
+    diameter = "6,787 km";
     day = "24 giờ 37 phút";
     trajectory = "687 ngày Trái Đất";
-  }
-  else if (planetName == "Jupiter") {
+    texture = marsTexture;
+  } else if (planetName == "Jupiter") {
     planetName = "Sao Mộc";
-    diameter = "139,822 kilomet";
+    diameter = "139,822 km";
     day = "9,8 giờ";
     trajectory = "11,9 năm Trái Đất";
-  }
-  else if (planetName == "Saturn") {
+    texture = jupiterTexture;
+  } else if (planetName == "Saturn") {
     planetName = "Sao Thổ";
-    diameter = "120,500 kilomet";
+    diameter = "120,500 km";
     day = "10,5 giờ";
-    trajectory = "29,5 năm Trát Đất";
-  }
-  else if (planetName == "Uranus") {
+    trajectory = "29,5 năm Trái Đất";
+    texture = saturnTexture;
+  } else if (planetName == "Uranus") {
     planetName = "Sao Thiên Vương";
-    diameter = "51,120 kilomet";
+    diameter = "51,120 km";
     day = "18 giờ";
     trajectory = "84 năm Trái Đất";
-  }
-  else if (planetName == "Neptune") {
+    texture = uranusTexture;
+  } else if (planetName == "Neptune") {
     planetName = "Sao Hải Vương";
-    diameter = "49,530 kilomet";
+    diameter = "49,530 km";
     day = "19 giờ";
     trajectory = "165 năm Trái Đất";
-  }
-  else {
+    texture = neptuneTexture;
+  } else {
     planetName = "Sao Diêm Vương";
-    diameter = "2,301 kilomet";
+    diameter = "2,301 km";
     day = "6,4 giờ";
     trajectory = "248 năm Trái Đất";
+    texture = plutoTexture;
   }
-  const planetInfoElement = document.getElementById('planet-info');
+
+  const closeModal = document.getElementsByClassName("close")[0];
+  closeModal.onclick = function () {
+    modal.style.display = "none";
+  };
+
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  };
+
+  const modal = document.getElementById('myModal');
+  const planetInfo = document.getElementById('text-info');
+  const textureInfo = document.getElementById('texture-info');
+  textureInfo.innerHTML = '';
+
   if (planet) {
-    console.log(1);
-    const { rotaing_speed_around_sun, self_rotation_speed } = planet;
-    planetInfoElement.innerHTML = `Hành tinh: ${planetName}<br/>Đường kính: ${diameter}<br/>Ngày: ${day}<br/>Quỹ đạo: ${trajectory}`;
-    planetInfoElement.style.display = 'block';
-  } else {
-    console.log(0);
+    planetInfo.innerHTML = `Hành tinh: ${planetName}<br/>Đường kính: ${diameter}<br/>Ngày: ${day}<br/>Quỹ đạo: ${trajectory}`;
+    const modalRenderer = new THREE.WebGLRenderer();
+    modalRenderer.setSize(400, 400);
+    textureInfo.appendChild(modalRenderer.domElement);
+    const modalScene = new THREE.Scene();
+
+    const modalCamera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+    modalCamera.position.z = 30;
+
+    const modalOrbit = new OrbitControls(modalCamera, modalRenderer.domElement);
+
+    const planetGeometry = new THREE.SphereGeometry(15, 50, 50);
+    const planetMaterial = new THREE.MeshStandardMaterial({ map: texture });
+    const modalPlanet = new THREE.Mesh(planetGeometry, planetMaterial);
+    modalScene.add(modalPlanet);
+
+    const modalLight = new THREE.PointLight(0xffffff, 1, 100);
+    modalLight.position.set(50, 50, 50);
+    modalScene.add(modalLight);
+
+    const modalAmbientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    modalScene.add(modalAmbientLight);
+
+    function modalAnimate() {
+      modalPlanet.rotateY(0.01);
+      modalRenderer.render(modalScene, modalCamera);
+      requestAnimationFrame(modalAnimate);
+    }
+    modalAnimate();
+
+    modal.style.display = 'block';
   }
 }
-
 
 
 
