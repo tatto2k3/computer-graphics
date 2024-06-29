@@ -1,36 +1,28 @@
-# ![Solar System](https://ankitjha2603.github.io/solar-system3D/image/solar-system.png) Solar System 3D Visualization using Three.js
+## 1. Giới thiệu
 
-Explore the wonders of our Solar System in an immersive 3D experience! Witness the rotation of planets around the Sun and their self-rotation in this interactive web-based application developed using Three.js.
+Dự án Trực quan hóa Hệ mặt trời 3D là một ứng dụng dựa trên web tương tác cho phép người dùng khám phá Hệ mặt trời trong môi trường ba chiều. Dự án được phát triển bằng thư viện Three.js, thư viện này cung cấp các công cụ mạnh mẽ để tạo nội dung 3D trên web. Người dùng có thể chứng kiến ​​sự quay của các hành tinh quanh Mặt trời và sự tự quay của chúng, cũng như tận hưởng vẻ đẹp của không gian trong trải nghiệm sống động này.
 
-![](https://ankitjha2603.github.io/solar-system3D/gif/display.gif)
+## 2. Tổng quan dự án
 
-## Table of Contents
+Dự án bao gồm một tệp HTML dùng để thiết lập trang web, tải các thư viện cần thiết và xác định cấu trúc cơ bản. Tệp JavaScript chính, `solarSystem.js`, chứa mã tạo cảnh 3D, tải họa tiết cho các hành tinh và không gian, đồng thời xử lý hoạt ảnh và tính tương tác.
 
-1. [Introduction](#1-introduction)
-2. [Project Overview](#2-project-overview)
-3. [Features](#5-features)
+## 3. Tính năng
 
-## 1. Introduction
+- Hình ảnh 3D thực tế của Hệ Mặt trời.
+- Điều khiển tương tác để khám phá các hành tinh và quỹ đạo của chúng.
 
-The Solar System 3D Visualization project is an interactive web-based application that allows users to explore the Solar System in a three-dimensional environment. The project is developed using the Three.js library, which provides powerful tools for creating 3D content on the web. Users can witness the rotation of planets around the Sun and their self-rotation, as well as enjoy the beauty of space in this immersive experience.
+#### Kiểm soát tốc độ
 
-## 2. Project Overview
+Bạn có thể điều chỉnh tốc độ hoạt ảnh theo sở thích của mình. Thanh trượt `speed` trong GUI cho phép bạn kiểm soát tốc độ các hành tinh quay và di chuyển quanh Mặt trời. Trượt nó sang phải để tăng tốc độ hoạt ảnh và sang trái để làm chậm hoạt ảnh.
 
-The project consists of an HTML file that sets up the web page, loads required libraries, and defines the basic structure. The main JavaScript file, `solarSystem.js`, contains the code that creates the 3D scene, loads textures for planets and space, and handles the animation and interactivity.
+#### Hiện/Ẩn đường đi của hành tinh
 
-## 3. Features
+Ứng dụng này cung cấp tùy chọn hiển thị hoặc ẩn đường đi của các hành tinh khi chúng quay quanh Mặt trời. Bằng cách bật nút chuyển đổi "Hiển thị đường dẫn" trong GUI, bạn có thể hình dung quỹ đạo của các hành tinh. Việc vô hiệu hóa nó sẽ ẩn các đường dẫn, cho phép có cái nhìn rõ ràng hơn về Hệ Mặt trời.
 
-- Realistic 3D visualization of the Solar System.
-- Interactive controls to explore the planets and their orbits.
+#### Ánh sáng thực tế
 
-#### Speed Control
+Tùy chọn "Chế độ xem thực" trong GUI tái tạo các điều kiện trong không gian, nơi các phần của hành tinh quay mặt ra xa Mặt trời không được chiếu sáng và có vẻ tối hơn. Khi được bật, ứng dụng sẽ điều chỉnh ánh sáng để tạo ra hình ảnh chân thực hơn về diện mạo của các hành tinh.
 
-You can adjust the animation speed to your preference. The `speed` slider in the GUI allows you to control the rate at which the planets rotate and move around the Sun. Slide it to the right to speed up the animation and to the left to slow it down.
-
-#### Show/Hide Planet Paths
-
-The application provides an option to show or hide the paths of the planets as they orbit around the Sun. By enabling the "Show path" toggle in the GUI, you can visualize the trajectories of the planets. Disabling it will hide the paths, allowing for a cleaner view of the Solar System.
-
-#### Realistic Lighting
-
-The "Real view" option in the GUI replicates the conditions in space, where parts of the planets facing away from the Sun are not illuminated and appear darker. When enabled, the application adjusts the lighting to create a more realistic representation of the planets' appearance.
+## Cấu hình và cài đặt
+- Bước 1: Clone source code từ đường dẫn git.
+- Bước 2: Mở code trên VS Code và chạy file index.html.
